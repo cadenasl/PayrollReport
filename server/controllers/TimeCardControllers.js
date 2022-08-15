@@ -5,9 +5,11 @@ const moment = require("moment");
 exports.createWeeklyTimeCard = async (req, res) => {
   const { name, employeeId, date, hoursWorked, weeklyPay, taxes, netPay } =
     req.body;
+  console.log("req.body====", req.body);
   try {
     //edge case where employee wasnt created first
-    const employee = await Employee.find({ name: name });
+    const employee = await Employee.findOne({ name: name });
+    console.log("employee===", employee, employee._id, employee.name);
     if (!employee) {
       return res.status(400).json({
         errorMessage:
@@ -17,16 +19,16 @@ exports.createWeeklyTimeCard = async (req, res) => {
     const weeklyTimeCard = new WeeklyTimeCard({
       name: employee.name,
       employeeId: employee._id,
-      date,
-      hoursWorked,
-      weeklyPay,
-      taxes,
-      netPay,
+      week: date,
+      hoursWorked: hoursWorked,
+      weeklyPay: weeklyPay,
+      taxes: taxes,
+      netPay: netPay,
     });
     await weeklyTimeCard.save();
 
-    const updatedEmployee = await Employee.findByIdAndUpdate(
-      employeeId,
+    await Employee.findByIdAndUpdate(
+      employee._id,
       {
         $push: {
           weeklyReports: weeklyTimeCard,
