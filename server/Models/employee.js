@@ -5,6 +5,10 @@ const EmployeeSchema = new Schema(
   {
     name: { type: String, required: true },
     isCurrent: { type: Boolean },
+    weeklyReports: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "weeklyTimeCard",
+    },
   },
   { timestamps: true }
 );

@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const WeeklyReportSchema = new Schema(
+const WeeklyTimeCardSchema = new Schema(
   {
-    employeeID: { type: String, required: true },
+    employeeId: { type: String, required: true },
     name: { type: String, required: true },
     week: { type: Date, required: true },
     hoursWorked: { type: Number, required: true },
@@ -14,4 +14,7 @@ const WeeklyReportSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = Employee = mongoose.model("employee", WeeklyReportSchema);
+module.exports = WeeklyTimeCard = mongoose.model(
+  "weeklyTimeCard",
+  WeeklyTimeCardSchema
+);
