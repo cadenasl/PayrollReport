@@ -52,13 +52,64 @@ exports.createWeeklyTimeCard = async (req, res) => {
 
 exports.modifyWeeklyTimeCard = async (req, res) => {
   const { employeeId, date, hoursWorked, weeklyPay, taxes, netPay } = req.body;
-  const updatedTimeCard = WeeklyTimeCard.findOneAndUpdate(
-    { date, employeeId },
-    { hoursWorked, weeklyPay, taxes, netPay }
-  );
-  res.status(200).json({ timeCard: updatedTimeCard });
+  console.log(req.body);
+
   try {
     //find if time card exist for week and add more to time card
+    const updatedTimeCard = await WeeklyTimeCard.findOneAndUpdate(
+      { employeeId: employeeId, week: date },
+      { hoursWorked, weeklyPay, taxes, netPay },
+      { new: true }
+    );
+    console.log(updatedTimeCard);
+    res.status(200).json({ timeCard: updatedTimeCard });
+  } catch (error) {
+    console.log(error);
+    const err =
+      (error.response && error.response.data) || error.response || error;
+    const statusCode =
+      (error.response && error.response.status) ||
+      error.status ||
+      error.statusCode ||
+      500;
+    res.status(statusCode).send(err);
+  }
+};
+
+exports.generateAllWeeklyReports = async (req, res) => {
+  const { date } = req.body;
+  try {
+    const report = await WeeklyTimeCard.aggregate([
+      [{ $sort: { name: -1, week: -1 } }],
+    ]);
+    console.log(report);
+    res.status(200).json({ report: report });
+  } catch (error) {
+    console.log(error);
+    const err =
+      (error.response && error.response.data) || error.response || error;
+    const statusCode =
+      (error.response && error.response.status) ||
+      error.status ||
+      error.statusCode ||
+      500;
+    res.status(statusCode).send(err);
+  }
+};
+
+exports.generatebyWeek = async (req, res) => {
+  const { date } = req.body;
+  const endingWeek = moment(date).add(7, "days");
+  try {
+    const report = await WeeklyTimeCard.aggregate([
+      {
+        $match: {
+          week: { $gte: new Date(date), $lt: new Date(endingWeek) },
+        },
+      },
+    ]);
+    console.log(report);
+    res.status(200).json({ report: report });
   } catch (error) {
     console.log(error);
     const err =
