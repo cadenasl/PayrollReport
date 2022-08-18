@@ -32,10 +32,10 @@ const NavBar = () => {
         Add Time Card
       </NavLink>
       <NavLink
-        to="/modify-timecard"
+        to="/delete-timecard"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Modify Time Card
+        Delete Time Card
       </NavLink>
     </div>
   );

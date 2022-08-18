@@ -6,6 +6,11 @@ exports.addEmployee = async (req, res) => {
   const { name, isCurrent } = req.body.data;
   console.log("name", req.body);
   try {
+    const foundEmployee = await Employee.findOne({ name: name });
+    console.log("foundEmployee===", foundEmployee);
+    if (foundEmployee) {
+      return res.status(400).json({ message: "employee exists already" });
+    }
     const newEmployee = new Employee({ name, isCurrent });
     await newEmployee.save();
     res.status(200).send("suceeded");
