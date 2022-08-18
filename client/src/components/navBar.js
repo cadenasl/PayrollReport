@@ -1,12 +1,42 @@
+import { NavLink } from "react-router-dom";
+
 const NavBar = () => {
+  let activeStyle = {
+    backgroundColor: "#04aa6d",
+    color: "white",
+  };
   return (
     <div class="topnav">
-      <a class="#news" href="#home">
+      <NavLink
+        to="/add-employee"
+        style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
         Add Employee
-      </a>
-      <a href="#news"> Modify Employee</a>
-      <a href="#contact">Add TimeCard</a>
-      <a href="#about">Modify TimeCard</a>
+      </NavLink>
+      <NavLink
+        to="/modify-employee"
+        style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
+        Modify Employee
+      </NavLink>
+      <NavLink
+        to="/"
+        style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
+        Generate Report
+      </NavLink>
+      <NavLink
+        to="/add-timecard"
+        style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
+        Add Time Card
+      </NavLink>
+      <NavLink
+        to="/modify-timecard"
+        style={({ isActive }) => (isActive ? activeStyle : undefined)}
+      >
+        Modify Time Card
+      </NavLink>
     </div>
   );
 };

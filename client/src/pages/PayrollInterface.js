@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TableRow from "../components/TableRow";
-
+import NavBar from "../components/navBar";
 const PayrollInterface = () => {
   const [report, setReport] = useState([]);
   const [error, setError] = useState(null);
@@ -22,29 +22,31 @@ const PayrollInterface = () => {
   console.log(report);
 
   return (
-    <div className="container-fluid text-center">
-      <div className="table-responsive">
+    <>
+      <NavBar />
+      <div className="container-fluid text-center">
         <h1>Payroll Report</h1>
-
-        <table id="customers">
-          <tbody>
-            <tr>
-              <th>Employee Name</th>
-              <th>Current or Past Employee</th>
-              <th> Week</th>
-              <th>Hours worked for week</th>
-              <th>weekly pay</th>
-              <th>taxes</th>
-              <th>net pay</th>
-            </tr>
-            {report.length &&
-              report.map((data) => {
-                return <TableRow data={data} />;
-              })}
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table id="customers">
+            <tbody>
+              <tr>
+                <th>Employee Name</th>
+                <th>Current or Past Employee</th>
+                <th> Week</th>
+                <th>Hours worked for week</th>
+                <th>weekly pay</th>
+                <th>taxes</th>
+                <th>net pay</th>
+              </tr>
+              {report.length &&
+                report.map((data) => {
+                  return <TableRow data={data} />;
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
