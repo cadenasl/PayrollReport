@@ -80,7 +80,17 @@ exports.generateAllWeeklyReports = async (req, res) => {
   const { date } = req.body;
   try {
     const report = await WeeklyTimeCard.aggregate([
-      [{ $sort: { name: -1, week: -1 } }],
+      [
+        { $sort: { name: -1, week: -1 } },
+        {
+          $lookup: {
+            from: "employees",
+            localField: "name",
+            foreignField: "name",
+            as: "employeeInfo",
+          },
+        },
+      ],
     ]);
     console.log(report);
     res.status(200).json({ report: report });
