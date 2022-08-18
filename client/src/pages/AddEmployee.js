@@ -50,6 +50,18 @@ const AddEmployee = () => {
               )}
             </div>
             <div class="form-group">
+              <label for="name">Name</label>
+
+              <select className="form-control" {...register("name")}>
+                <option value="female">female</option>
+                <option value="male">male</option>
+                <option value="other">other</option>
+              </select>
+              {errors.name && (
+                <span className="text-danger">{errors.name.message}</span>
+              )}
+            </div>
+            <div class="form-group">
               <label for="isCurrent">Is this a current Employee</label>
 
               <input
