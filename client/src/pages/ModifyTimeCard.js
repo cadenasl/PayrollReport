@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DateCalender from "../components/Datepicker";
+import moment from "moment";
 import axios from "axios";
 const ModifyTimeCard = () => {
   const params = useParams();
@@ -20,6 +21,7 @@ const ModifyTimeCard = () => {
   } = useForm({ defaultValues: { timeStamp: new Date() } });
   console.log(params.employee);
   const [timeCard, setTimeCard] = useState();
+  const [startDate, setStartDate] = useState();
   const getSpecificTimeCard = async () => {
     try {
       const { data } = await axios.post(
@@ -38,7 +40,6 @@ const ModifyTimeCard = () => {
         { submissiondata }
       );
       navigate("/");
-      setTimeCard(data.timeCard);
     } catch (error) {
       console.error(error);
     }
@@ -89,7 +90,13 @@ const ModifyTimeCard = () => {
             </div>
             <div className="form-group">
               <label htmlFor="url" className="input-label">
-                Date
+                Work Week:{" "}
+                {startDate &&
+                  `from ${moment(startDate).format("MM-DD-YYYY")} to ${moment(
+                    startDate
+                  )
+                    .add(6, "days")
+                    .format("MM-DD-YYYY")} `}
               </label>
               <Controller
                 control={control}
@@ -97,7 +104,10 @@ const ModifyTimeCard = () => {
                 render={({ field }) => (
                   <DateCalender
                     placeholderText="Select date"
-                    setDate={(date) => field.onChange(date)}
+                    setDate={(date) => {
+                      setStartDate(date);
+                      field.onChange(date);
+                    }}
                     date={field.value}
                   />
                 )}

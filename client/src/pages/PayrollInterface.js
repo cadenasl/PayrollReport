@@ -26,6 +26,7 @@ const PayrollInterface = () => {
       <NavBar />
       <div className="container-fluid text-center">
         <h1>Payroll Report</h1>
+        <h3>Click on employee row to modify time Card</h3>
         <div className="table-responsive">
           <table id="customers">
             <tbody>

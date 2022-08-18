@@ -10,6 +10,18 @@ const DateCalender = ({ setDate, date }) => {
         // altInputClass: 'flatpickr-custom-form-control form-control',
         dateFormat: "n/j/y",
         wrap: true,
+        disable: [
+          function (date) {
+            return (
+              date.getDay() === 1 ||
+              date.getDay() === 2 ||
+              date.getDay() === 3 ||
+              date.getDay() === 4 ||
+              date.getDay() === 5 ||
+              date.getDay() === 6
+            );
+          },
+        ],
       }}
       // className="flatpickr-custom flatpickr-custom-borderless"
       onChange={([date]) => {

@@ -1,9 +1,27 @@
 import NavBar from "../components/navBar";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 const ModifyEmployee = () => {
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
+
+  const submitModifyEmployee = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:4001/employee/modify-employee",
+        { data }
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(error.response.data.message);
+      setError(error.response.data.message);
+    }
+  };
+
+  console.log("error", error);
   const {
     register,
     handleSubmit,
@@ -13,6 +31,7 @@ const ModifyEmployee = () => {
 
   const onSubmit = (data) => {
     console.debug(data);
+    submitModifyEmployee(data);
   };
   console.log(errors);
   return (
@@ -27,9 +46,9 @@ const ModifyEmployee = () => {
               <input
                 type="text"
                 class="form-control"
-                id="Name"
-                placeholder="Name"
-                {...register("Name", { required: "Name is required" })}
+                id="name"
+                placeholder="name"
+                {...register("name", { required: "Name is required" })}
               />
               {errors.Name && (
                 <span className="text-danger">{errors.Name.message}</span>
@@ -39,16 +58,16 @@ const ModifyEmployee = () => {
               <label for="TypeEmployee">Is this a current Employee</label>
 
               <input
-                name="TypeEmployee"
+                name="isCurrent"
                 type="checkbox"
-                {...register("TypeEmployee")}
-                id="TypeEmployee"
+                {...register("isCurrent")}
+                id="isCurrent"
                 className="ml-2"
               />
 
-              {errors.TypeEmployee && (
+              {errors.isCurrent && (
                 <span className="text-danger py-2">
-                  {errors.TypeEmployee.message}
+                  {errors.isCurrent.message}
                 </span>
               )}
             </div>

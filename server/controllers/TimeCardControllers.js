@@ -3,8 +3,8 @@ const Employee = require("../Models/Employee");
 const moment = require("moment");
 
 exports.createWeeklyTimeCard = async (req, res) => {
-  const { name, employeeId, date, hoursWorked, weeklyPay, taxes, netPay } =
-    req.body;
+  const { name, week, hoursWorked, weeklyPay, taxes, netPay } =
+    req.body.submissiondata;
   console.log("req.body====", req.body);
   try {
     //edge case where employee wasnt created first
@@ -12,14 +12,14 @@ exports.createWeeklyTimeCard = async (req, res) => {
     console.log("employee===", employee, employee._id, employee.name);
     if (!employee) {
       return res.status(400).json({
-        errorMessage:
+        message:
           "Please create an Employee to database before creating weekly time card",
       });
     }
     const weeklyTimeCard = new WeeklyTimeCard({
       name: employee.name,
       employeeId: employee._id,
-      week: date,
+      week: week,
       hoursWorked: hoursWorked,
       weeklyPay: weeklyPay,
       taxes: taxes,
@@ -75,8 +75,8 @@ exports.modifyWeeklyTimeCard = async (req, res) => {
   try {
     //find if time card exist for week and add more to time card
     const updatedTimeCard = await WeeklyTimeCard.findOneAndUpdate(
-      { _id: _id, week: week },
-      { hoursWorked, weeklyPay, taxes, netPay },
+      { _id: _id },
+      { hoursWorked, weeklyPay, taxes, netPay, week },
       { new: true }
     );
     console.log("updatedTimeCard====", updatedTimeCard);
@@ -124,7 +124,35 @@ exports.generateAllWeeklyReports = async (req, res) => {
     res.status(statusCode).send(err);
   }
 };
-
+exports.groupByWeek = async (req, res) => {
+  try {
+    const report = await WeeklyTimeCard.aggregate([
+      {
+        $group: {
+          name: "$name",
+        },
+      },
+      {
+        $group: {
+          _id: { $week: "$week" },
+          totalHours: { $sum: "$hoursWorked" },
+        },
+      },
+    ]);
+    console.log(report);
+    res.status(200).json({ report: report });
+  } catch (error) {
+    console.log(error);
+    const err =
+      (error.response && error.response.data) || error.response || error;
+    const statusCode =
+      (error.response && error.response.status) ||
+      error.status ||
+      error.statusCode ||
+      500;
+    res.status(statusCode).send(err);
+  }
+};
 exports.generatebyWeek = async (req, res) => {
   const { date } = req.body;
   const endingWeek = moment(date).add(7, "days");

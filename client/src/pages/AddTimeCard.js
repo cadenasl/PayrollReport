@@ -2,8 +2,13 @@ import NavBar from "../components/navBar";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import DateCalender from "../components/Datepicker";
+import moment from "moment";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const AddTimeCard = () => {
   const [error, setError] = useState(false);
+  const [startDate, setStartDate] = useState();
+  const navigate = useNavigate();
   const {
     control,
     register,
@@ -11,11 +16,25 @@ const AddTimeCard = () => {
     getValues,
     formState: { errors },
   } = useForm({ defaultValues: { timeStamp: new Date() } });
+  const submitModifiedTimeCard = async (submissiondata) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4001/timecard/create-timecard",
+        { submissiondata }
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      console.error(error.response.data.message);
+      setError(error.response.data.message);
+    }
+  };
 
   const onSubmit = (data) => {
-    console.debug(data);
+    submitModifiedTimeCard(data);
   };
   console.log(errors);
+  console.log("start date", startDate);
   return (
     <>
       <NavBar />
@@ -28,25 +47,34 @@ const AddTimeCard = () => {
               <input
                 type="text"
                 class="form-control"
-                id="Name"
+                id="name"
                 placeholder="Name"
-                {...register("Name", { required: "Name is required" })}
+                {...register("name", { required: "name is required" })}
               />
-              {errors.Name && (
-                <span className="text-danger">{errors.Name.message}</span>
+              {errors.name && (
+                <span className="text-danger">{errors.name.message}</span>
               )}
             </div>
             <div className="form-group">
               <label htmlFor="url" className="input-label">
-                Date
+                Work Week{" "}
+                {startDate &&
+                  `from ${moment(startDate).format("MM-DD-YYYY")} to ${moment(
+                    startDate
+                  )
+                    .add(6, "days")
+                    .format("MM-DD-YYYY")} `}
               </label>
               <Controller
                 control={control}
-                name="timeStamp"
+                name="week"
                 render={({ field }) => (
                   <DateCalender
                     placeholderText="Select date"
-                    setDate={(date) => field.onChange(date)}
+                    setDate={(date) => {
+                      field.onChange(date);
+                      setStartDate(date);
+                    }}
                     date={field.value}
                   />
                 )}
