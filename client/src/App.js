@@ -16,7 +16,7 @@ function App() {
         <Route path="/modify-employee" element={<ModifyEmployee />} />
         <Route path="/add-timecard" element={<AddTimeCard />} />
 
-        <Route path="/modify-timecard" element={<ModifyTimeCard />} />
+        <Route path="/modify-timecard/:employee" element={<ModifyTimeCard />} />
       </Routes>
     </div>
   );

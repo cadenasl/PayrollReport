@@ -1,30 +1,72 @@
 import NavBar from "../components/navBar";
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import DateCalender from "../components/Datepicker";
+import axios from "axios";
 const ModifyTimeCard = () => {
+  const params = useParams();
+  const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [success, onSuccess] = useState(false);
   const {
     control,
     register,
     handleSubmit,
+    reset,
     getValues,
     setValue,
     formState: { errors },
   } = useForm({ defaultValues: { timeStamp: new Date() } });
+  console.log(params.employee);
+  const [timeCard, setTimeCard] = useState();
+  const getSpecificTimeCard = async () => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4001/timecard/get-specific-timecard",
+        { _id: params.employee }
+      );
+      setTimeCard(data.timeCard);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const submitModifiedTimeCard = async (submissiondata) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4001/timecard/modify-timecard",
+        { submissiondata }
+      );
+      navigate("/");
+      setTimeCard(data.timeCard);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getSpecificTimeCard();
+  }, []);
+  console.log("timecard", timeCard);
 
   const onSubmit = (data) => {
-    console.debug(data);
+    const submission = { _id: timeCard._id, ...data };
+    submitModifiedTimeCard(submission);
   };
   console.log(errors);
-  //   useEffect(() => {
-  //     if (userData) {
-  //         setValue([
-  //             { name: userData.name },
-  //             { phone: userData.phone }
-  //         ]);
-  //     }
-  // }, [userData]);
+  useEffect(() => {
+    if (timeCard && timeCard.name) {
+      reset({
+        name: timeCard.name,
+        week: timeCard.week,
+        hoursWorked: timeCard.hoursWorked,
+        weeklyPay: timeCard.weeklyPay,
+        taxes: timeCard.taxes,
+        netPay: timeCard.netPay,
+      });
+    }
+  }, [timeCard]);
+
   return (
     <>
       <NavBar />
@@ -37,12 +79,12 @@ const ModifyTimeCard = () => {
               <input
                 type="text"
                 class="form-control"
-                id="Name"
+                id="name"
                 placeholder="Name"
-                {...register("Name", { required: "Name is required" })}
+                {...register("name", { required: "name is required" })}
               />
-              {errors.Name && (
-                <span className="text-danger">{errors.Name.message}</span>
+              {errors.name && (
+                <span className="text-danger">{errors.name.message}</span>
               )}
             </div>
             <div className="form-group">
@@ -51,7 +93,7 @@ const ModifyTimeCard = () => {
               </label>
               <Controller
                 control={control}
-                name="timeStamp"
+                name="week"
                 render={({ field }) => (
                   <DateCalender
                     placeholderText="Select date"

@@ -5,7 +5,7 @@ import NavBar from "../components/navBar";
 const PayrollInterface = () => {
   const [report, setReport] = useState([]);
   const [error, setError] = useState(null);
-  const generateOverallReport = async (credentials) => {
+  const generateOverallReport = async () => {
     try {
       const { data } = await axios.get(
         "http://localhost:4001/timecard/generate-weekly-report"

@@ -49,19 +49,37 @@ exports.createWeeklyTimeCard = async (req, res) => {
     res.status(statusCode).send(err);
   }
 };
+exports.getTimeCard = async (req, res) => {
+  const { _id } = req.body;
+  try {
+    const timeCard = await WeeklyTimeCard.findById(_id);
 
+    res.status(200).json({ timeCard: timeCard });
+  } catch (error) {
+    console.log(error);
+    const err =
+      (error.response && error.response.data) || error.response || error;
+    const statusCode =
+      (error.response && error.response.status) ||
+      error.status ||
+      error.statusCode ||
+      500;
+    res.status(statusCode).send(err);
+  }
+};
 exports.modifyWeeklyTimeCard = async (req, res) => {
-  const { employeeId, date, hoursWorked, weeklyPay, taxes, netPay } = req.body;
-  console.log(req.body);
+  const { _id, week, hoursWorked, weeklyPay, taxes, netPay } =
+    req.body.submissiondata;
+  console.log(req.body.submissiondata);
 
   try {
     //find if time card exist for week and add more to time card
     const updatedTimeCard = await WeeklyTimeCard.findOneAndUpdate(
-      { employeeId: employeeId, week: date },
+      { _id: _id, week: week },
       { hoursWorked, weeklyPay, taxes, netPay },
       { new: true }
     );
-    console.log(updatedTimeCard);
+    console.log("updatedTimeCard====", updatedTimeCard);
     res.status(200).json({ timeCard: updatedTimeCard });
   } catch (error) {
     console.log(error);
