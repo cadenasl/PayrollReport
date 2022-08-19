@@ -27,7 +27,7 @@ const PayrollInterface = () => {
       <NavBar />
       <div className="container-fluid text-center">
         <h1>Payroll Report</h1>
-        <h3>Click on employee row to modify time Card</h3>
+        {report.length?<h3>Click on employee row to modify time Card</h3>:null}
         <div className="table-responsive">
           <table id="customers">
             <tbody>
@@ -40,12 +40,13 @@ const PayrollInterface = () => {
                 <th>taxes</th>
                 <th>net pay</th>
               </tr>
-              {report.length &&
+              {report.length?
                 report.map((data) => {
                   return <TableRow data={data} />;
-                })}
+                }):null}
             </tbody>
           </table>
+          {!report.length && <div>Please add an employee name and time card to populate data here</div>}
         </div>
       </div>
     </>

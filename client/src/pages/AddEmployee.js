@@ -21,7 +21,7 @@ const AddEmployee = () => {
         "http://localhost:4001/employee/add-employee",
         { data }
       );
-      navigate("/");
+      navigate("/add-timecard");
     } catch (error) {
       console.error(error);
       console.error(error.response.data.message);
