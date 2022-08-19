@@ -6,21 +6,26 @@ import moment from "moment";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const AddTimeCard = () => {
+  const [isLoading,setIsLoading]=useState(false)
   const [error, setError] = useState(false);
   const [startDate, setStartDate] = useState();
   const [employees,setEmployees]=useState([])
   const getEmployee = async () => {
     try {
+      setIsLoading(true)
       const {data} = await axios.get(
         "http://localhost:4001/employee/",
         
       );
 
       setEmployees(data.employeeNames)
+      setIsLoading(false)
     } catch (error) {
       console.error(error);
+      setIsLoading(false)
     }
   };
+  console.log("employees",employees)
   const navigate = useNavigate();
   const {
     control,
@@ -54,6 +59,16 @@ const AddTimeCard = () => {
     
     
     },[])
+
+    if(isLoading){
+      return <>
+      <NavBar />
+      <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div></>
+    }
   return (
     <>
       <NavBar />

@@ -7,6 +7,7 @@ import { useState,useEffect } from "react";
 const DeleteEmployee = () => {
   const [error, setError] = useState(false);
   const [employees,setEmployees]=useState([])
+  const [isLoading,setIsLoading]=useState(false)
   const navigate = useNavigate();
   const {
     register,
@@ -16,13 +17,16 @@ const DeleteEmployee = () => {
   } = useForm();
   const getEmployee = async () => {
     try {
+      setIsLoading(true)
       const {data} = await axios.get(
         "http://localhost:4001/employee/",
         
       );
 
       setEmployees(data.employeeNames)
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error(error);
     }
   };
@@ -49,6 +53,16 @@ const DeleteEmployee = () => {
     
     
     },[])
+
+    if(isLoading){
+      return <>
+      <NavBar />
+      <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div></>
+    }
   return (
     <>
       <NavBar />

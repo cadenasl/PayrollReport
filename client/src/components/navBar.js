@@ -6,7 +6,7 @@ const NavBar = () => {
     color: "white",
   };
   return (
-    <div class="topnav">
+    <div class="container-fluid topnav">
       <NavLink
         to="/add-employee"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -35,7 +35,7 @@ const NavBar = () => {
         to="/delete-timecard"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Delete Time Card
+        Delete Employee
       </NavLink>
     </div>
   );

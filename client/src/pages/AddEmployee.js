@@ -23,17 +23,27 @@ const AddEmployee = () => {
       navigate("/");
     } catch (error) {
       console.error(error);
+      console.error(error.response.data.message);
+      setError(error.response.data.message);
     }
   };
   const onSubmit = (data) => {
     console.log(data);
     submitAddEmployee(data);
   };
-  console.log(errors);
+
+  
+
+  console.log(error);
   return (
     <>
       <NavBar />
       <h2>Add an Employee</h2>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
       <div className="container-fluid text-center addEmployeeFormContainer mt-2">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -50,18 +60,7 @@ const AddEmployee = () => {
                 <span className="text-danger">{errors.name.message}</span>
               )}
             </div>
-            {/* <div class="form-group">
-              <label for="name">Name</label>
-
-              <select className="form-control" {...register("name")}>
-                <option value="female">female</option>
-                <option value="male">male</option>
-                <option value="other">other</option>
-              </select>
-              {errors.name && (
-                <span className="text-danger">{errors.name.message}</span>
-              )}
-            </div> */}
+           
             <div class="form-group">
               <label for="isCurrent">Is this a current Employee</label>
 

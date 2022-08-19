@@ -33,7 +33,7 @@ const PayrollInterface = () => {
               <tr>
                 <th>Employee Name</th>
                 <th>Current or Past Employee</th>
-                <th> Week</th>
+                <th>Time Card Week</th>
                 <th>Hours worked for week</th>
                 <th>weekly pay</th>
                 <th>taxes</th>

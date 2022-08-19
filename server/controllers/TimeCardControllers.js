@@ -9,7 +9,7 @@ exports.createWeeklyTimeCard = async (req, res) => {
   try {
     //edge case where employee wasnt created first
     const employee = await Employee.findOne({ name: name });
-    console.log("employee===", employee, employee._id, employee.name);
+    
     if (!employee) {
       return res.status(400).json({
         message:
@@ -99,7 +99,7 @@ exports.generateAllWeeklyReports = async (req, res) => {
   try {
     const report = await WeeklyTimeCard.aggregate([
       [
-        { $sort: { name: -1, week: -1 } },
+        { $sort: { week: -1 } },
         {
           $lookup: {
             from: "employees",
