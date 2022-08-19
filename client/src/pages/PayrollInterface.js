@@ -5,6 +5,7 @@ import NavBar from "../components/navBar";
 const PayrollInterface = () => {
   const [report, setReport] = useState([]);
   const [error, setError] = useState(null);
+  //generates report sorted by work week
   const generateOverallReport = async () => {
     try {
       const { data } = await axios.get(

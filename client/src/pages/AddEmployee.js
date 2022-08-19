@@ -14,6 +14,7 @@ const AddEmployee = () => {
     getValues,
     formState: { errors },
   } = useForm();
+  //submits new employee information
   const submitAddEmployee = async (data) => {
     try {
       const response = await axios.post(

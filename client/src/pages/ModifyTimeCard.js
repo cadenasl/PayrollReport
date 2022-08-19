@@ -22,6 +22,7 @@ const ModifyTimeCard = () => {
   console.log(params.employee);
   const [timeCard, setTimeCard] = useState();
   const [startDate, setStartDate] = useState();
+  //obtains specfic time card by id stored in params
   const getSpecificTimeCard = async () => {
     try {
       const { data } = await axios.post(

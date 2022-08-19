@@ -15,6 +15,7 @@ const DeleteEmployee = () => {
     getValues,
     formState: { errors },
   } = useForm();
+  //obtains employee names for dropdown
   const getEmployee = async () => {
     try {
       setIsLoading(true)
@@ -30,7 +31,8 @@ const DeleteEmployee = () => {
       console.error(error);
     }
   };
-  const submitAddEmployee = async (data) => {
+  //deletes employee and timecards from database
+  const submitdeleteEmployee = async (data) => {
     try {
       const response = await axios.delete(
         "http://localhost:4001/employee/delete-employee",
@@ -43,7 +45,7 @@ const DeleteEmployee = () => {
   };
   const onSubmit = (data) => {
     console.log(data);
-    submitAddEmployee(data);
+    submitdeleteEmployee(data);
   };
   console.log(errors);
   useEffect(()=>{

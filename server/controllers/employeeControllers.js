@@ -6,12 +6,12 @@ exports.addEmployee = async (req, res) => {
   const { name, isCurrent } = req.body.data;
   console.log("name", req.body);
   try {
-    const foundEmployee = await Employee.findOne({ name: name });
+    const foundEmployee = await Employee.findOne({ name: name.toLowerCase() });
     console.log("foundEmployee===", foundEmployee);
     if (foundEmployee) {
       return res.status(400).json({ message: "employee exists already" });
     }
-    const newEmployee = new Employee({ name, isCurrent });
+    const newEmployee = new Employee({ name:name.toLowerCase(), isCurrent });
     await newEmployee.save();
     res.status(200).send("suceeded");
   } catch (error) {

@@ -10,6 +10,8 @@ const AddTimeCard = () => {
   const [error, setError] = useState(false);
   const [startDate, setStartDate] = useState();
   const [employees,setEmployees]=useState([])
+
+  //fetches employee names for employee dropdown
   const getEmployee = async () => {
     try {
       setIsLoading(true)
@@ -34,6 +36,7 @@ const AddTimeCard = () => {
     getValues,
     formState: { errors },
   } = useForm({ defaultValues: { timeStamp: new Date() } });
+  //submits employee time card information 
   const submitModifiedTimeCard = async (submissiondata) => {
     try {
       const { data } = await axios.post(

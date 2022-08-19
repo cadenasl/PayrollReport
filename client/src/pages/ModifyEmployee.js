@@ -32,6 +32,7 @@ getEmployee()
 },[])
 
 console.log("employees",employees)
+//modifies employee information
   const submitModifyEmployee = async (data) => {
     try {
       const response = await axios.post(
