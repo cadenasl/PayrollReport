@@ -2,10 +2,11 @@ import NavBar from "../components/navBar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const AddEmployee = () => {
   const [error, setError] = useState(false);
+  
   const navigate = useNavigate();
   const {
     register,
@@ -49,7 +50,7 @@ const AddEmployee = () => {
                 <span className="text-danger">{errors.name.message}</span>
               )}
             </div>
-            <div class="form-group">
+            {/* <div class="form-group">
               <label for="name">Name</label>
 
               <select className="form-control" {...register("name")}>
@@ -60,7 +61,7 @@ const AddEmployee = () => {
               {errors.name && (
                 <span className="text-danger">{errors.name.message}</span>
               )}
-            </div>
+            </div> */}
             <div class="form-group">
               <label for="isCurrent">Is this a current Employee</label>
 

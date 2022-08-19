@@ -15,7 +15,7 @@ connectDB();
 app.use(cors());
 app.use("/employee", employee);
 app.use("/timecard", weeklyTimeCard);
-const Port = process.env.port || 4001;
+const Port = 4001;
 app.listen(Port, () => {
   console.log(`server running on port ${Port}`);
 });

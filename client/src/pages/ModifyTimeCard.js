@@ -119,7 +119,7 @@ const ModifyTimeCard = () => {
                 type="number"
                 class="form-control"
                 id="hoursWorked"
-                placeholder="hoursWorked"
+                placeholder="Hours Worked"
                 {...register("hoursWorked", {
                   valueAsNumber: true,
                   required: "Hours is required",
@@ -137,7 +137,7 @@ const ModifyTimeCard = () => {
                 type="number"
                 class="form-control"
                 id="weeklyPay"
-                placeholder="weeklyPay"
+                placeholder="Weekly Pay"
                 {...register("weeklyPay", {
                   valueAsNumber: true,
                   required: "weekly pay is required",

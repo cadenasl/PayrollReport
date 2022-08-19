@@ -80,3 +80,22 @@ exports.deleteEmployee = async (req, res) => {
     res.status(statusCode).send(err);
   }
 };
+
+
+exports.getAllEmployeeNames=async(req,res)=>{
+try {
+  const employeeNames=await Employee.distinct("name")
+  res.status(200).json({employeeNames:employeeNames})
+} catch (error) {
+  console.log(error);
+    const err =
+      (error.response && error.response.data) || error.response || error;
+    const statusCode =
+      (error.response && error.response.status) ||
+      error.status ||
+      error.statusCode ||
+      500;
+    res.status(statusCode).send(err);
+}
+
+}

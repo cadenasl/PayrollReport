@@ -1,6 +1,6 @@
 import NavBar from "../components/navBar";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateCalender from "../components/Datepicker";
 import moment from "moment";
 import axios from "axios";
@@ -8,6 +8,19 @@ import { useNavigate } from "react-router-dom";
 const AddTimeCard = () => {
   const [error, setError] = useState(false);
   const [startDate, setStartDate] = useState();
+  const [employees,setEmployees]=useState([])
+  const getEmployee = async () => {
+    try {
+      const {data} = await axios.get(
+        "http://localhost:4001/employee/",
+        
+      );
+
+      setEmployees(data.employeeNames)
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const navigate = useNavigate();
   const {
     control,
@@ -29,12 +42,18 @@ const AddTimeCard = () => {
       setError(error.response.data.message);
     }
   };
-
   const onSubmit = (data) => {
     submitModifiedTimeCard(data);
   };
   console.log(errors);
   console.log("start date", startDate);
+  useEffect(()=>{
+    getEmployee()
+    
+    
+    
+    
+    },[])
   return (
     <>
       <NavBar />
@@ -42,15 +61,13 @@ const AddTimeCard = () => {
       <div className="container-fluid text-center addEmployeeFormContainer mt-2">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <div class="form-group">
-              <label for="Name">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="Name"
-                {...register("name", { required: "name is required" })}
-              />
+          <div class="form-group">
+              <label for="name">Name</label>
+
+              <select className="form-control" {...register("name")}>
+              {employees&&employees.length&&employees.map((obj)=>{return <option value={obj}>{obj}</option>})}
+                
+              </select>
               {errors.name && (
                 <span className="text-danger">{errors.name.message}</span>
               )}
